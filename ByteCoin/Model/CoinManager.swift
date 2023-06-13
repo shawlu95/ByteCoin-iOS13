@@ -29,10 +29,22 @@ struct CoinManager {
             let task = session.dataTask(with: url) { (data, response, error) in
                 if let safeData = data {
                     print(String(data: safeData, encoding: .utf8))
+                    print(parseJSON(safeData))
                 }
             }
             // 4. Start the task
             task.resume()
+        }
+    }
+    
+    func parseJSON(_ data: Data) -> Double? {
+        let decoder = JSONDecoder()
+        do {
+            let decoded = try decoder.decode(CoinData.self, from: data)
+            let lastPrice = decoded.rate
+            return lastPrice
+        } catch {
+            return nil
         }
     }
 }
