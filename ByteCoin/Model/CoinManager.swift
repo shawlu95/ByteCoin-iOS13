@@ -16,13 +16,13 @@ protocol CoinManagerDelegate {
 struct CoinManager {
     
     var delegate: CoinManagerDelegate?
-    let baseURL = "https://rest.coinapi.io/v1/exchangerate/BTC"
+    let baseURL = "http://localhost:8080/api/greet"
     let apiKey = "YOUR_API_KEY_HERE"
 
     let currencyArray = ["AUD", "BRL","CAD","CNY","EUR","GBP","HKD","IDR","ILS","INR","JPY","MXN","NOK","NZD","PLN","RON","RUB","SEK","SGD","USD","ZAR"]
 
     func getCoinPrice(for currency: String) {
-        let url = baseURL + "/" + currency + "?apiKey=" + apiKey
+        let url = baseURL + "?username=" + currency
         performRequest(with: url, for: currency)
     }
     
@@ -38,9 +38,8 @@ struct CoinManager {
                     return
                 }
                 if let safeData = data {
-                    if let price = parseJSON(safeData) {
-                        let priceString = String(format: "%.2f", price)
-                        self.delegate?.didUpdateCoinPrice(price: priceString, currency: currency)
+                    if let username = parseJSON(safeData) {
+                        self.delegate?.didUpdateCoinPrice(price: username, currency: currency)
                     }
                 }
             }
@@ -49,12 +48,11 @@ struct CoinManager {
         }
     }
     
-    func parseJSON(_ data: Data) -> Double? {
+    func parseJSON(_ data: Data) -> String? {
         let decoder = JSONDecoder()
         do {
-            let decoded = try decoder.decode(CoinData.self, from: data)
-            let lastPrice = decoded.rate
-            return lastPrice
+            let decoded = try decoder.decode(Greet.self, from: data)
+            return decoded.message
         } catch {
             return nil
         }
