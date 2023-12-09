@@ -16,7 +16,8 @@ protocol CoinManagerDelegate {
 struct CoinManager {
     
     var delegate: CoinManagerDelegate?
-    let baseURL = "http://localhost:8080/api/greet"
+//    let baseURL = "http://localhost:8080/api/v1/greet/param"
+    let baseURL = "https://shawlu95-sandbox-a6f73a3d16cd.herokuapp.com/api/v1/greet/param"
     let apiKey = "YOUR_API_KEY_HERE"
 
     let currencyArray = ["AUD", "BRL","CAD","CNY","EUR","GBP","HKD","IDR","ILS","INR","JPY","MXN","NOK","NZD","PLN","RON","RUB","SEK","SGD","USD","ZAR"]
